@@ -35,7 +35,7 @@ checkresiduals(fit)
 fcast <- forecast(fit, xreg=rep(mean(uschange[,2]),8))
 autoplot(fcast) + xlab("Year") +
   ylab("Percentage change")
-
+fcast
 
 #Daily electricity demand and maximum daily temperature 
 #for the state of Victoria in Australia for 2014.
@@ -52,3 +52,27 @@ fcast <- forecast(fit,
                   xreg = cbind(MaxTemp=rep(26,14), MaxTempSq=rep(26^2,14),
                                Workday=c(0,1,0,0,1,1,1,1,1,0,0,1,1,1)))
 autoplot(fcast) + ylab("Electricity demand (GW)")
+
+
+
+#using Airpassenger data
+x = AirPassengers
+lx = log(x)
+dlx = diff(lx)
+
+#twelfth-order difference is applied and stored in ddlx.
+ddlx = diff(dlx, 12)
+
+#plot timeseries
+plot.ts(cbind(x,lx,dlx,ddlx), main="")
+# below of interest for showing seasonal RW (not shown here):
+par(mfrow=c(2,1))
+monthplot(dlx); monthplot(ddlx)
+
+#plot ACF
+acf2(ddlx,50)
+
+#try SARIMA
+sarima(lx, 1,1,1, 0,1,1,12)
+sarima(lx, 0,1,1, 0,1,1,12)
+sarima(lx, 1,1,0, 0,1,1,12)
