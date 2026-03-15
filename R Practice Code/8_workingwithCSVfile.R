@@ -115,6 +115,9 @@ is.na(salesdata)
 #total number of NAs
 sum(is.na(salesdata))
 
+sum(is.na(salesdata$`Order Priority`))
+sum(is.na(salesdata$Sales))
+
 #removing rows with NAs
 S1<- na.omit(salesdata)
 dim(S1)
@@ -139,6 +142,9 @@ S0$Unit.Price[is.na(S0$Unit.Price)] <- runif(n = sum(is.na(S0$Unit.Price)),
                                              min = min(S0$Unit.Price, na.rm = TRUE),
                                              max = max(S0$Unit.Price, na.rm = TRUE))
 
+
+View(S0)
+
 #Since categorical variables do not have min and max values, 
 #we can replace the missing values for categorical variables 
 #by random value from each variable.
@@ -148,10 +154,13 @@ S0$Order.Priority[is.na(S0$Order.Priority)] <- sample(levels(S0$Order.Priority),
 S0$Ship.Mode[is.na(S0$Ship.Mode)] <- sample(levels(S0$Ship.Mode),
                                             size = sum(is.na(S0$Ship.Mode)),
                                             replace = TRUE)
+
+which(is.na(S0$`Customer Name`))
 S0$Customer.Name[is.na(S0$Customer.Name)] <- sample(levels(S0$Customer.Name),
                                                     size = sum(is.na(S0$Customer.Name)),
                                                     replace = TRUE)
 
+View(S0)
 #corelation plot
 cor(S0$Shipping.Cost, S0$Order.Quantity)
 
@@ -169,4 +178,4 @@ sd(S1$`Shipping Cost`)
 par(mfrow = c(1, 2))
 #boxplot(S1$Order.Quantity`, main = "Order Quantity")
 boxplot(S1$Profit, main = "Profit")
-
+boxplot(S0$Sales, main="Sales")
